@@ -1,0 +1,53 @@
+# Byte-compiled files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Django-specific
+*.log
+*.pot
+*.py[cod]
+__pycache__/
+db.sqlite3
+media/
+staticfiles/
+
+# Environment files
+.env
+.env.*
+
+# Python virtual environment
+venv/
+env/
+
+# IDE/editor specific
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Distribution / packaging
+*.egg
+*.egg-info
+dist/
+build/
+
+
+#sqlite
+*.sqlite3
+
+#images and media and static files
+
+admin-interface/logo/*
+media/*
+staticfiles/*
+uploads/*
+
+
+# logs
+logs/*

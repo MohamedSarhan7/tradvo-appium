@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+
+
+
+
+<!--  -->
+<div class="d-flex justify-content-center pt-5">
+
+  <div class="login-container w-50">
+
+    <div class="card login-card">
+      <div class="card-body">
+        <h5 class="card-title text-center">{% trans "Sign up" %}</h5>
+        <form method="post" action="{% url 'register' %}">
+          {% csrf_token %}
+          <div class="form-group p-2">
+            <label for="username" class="p-2">username</label>
+            {% render_field form.username class="form-control" placeholder="enter your username"  %}
+          </div>
+          <div class="form-group p-2">
+            <label for="password" class="p-2">Password</label>
+            {% render_field form.password1 class="form-control" placeholder="enter your Password" %}
+          </div>
+
+          <div class="form-group p-2">
+            <label for="password2" class="p-2">Password confirmation</label>
+            {% render_field form.password2 class="form-control" placeholder="retype your Password" %}
+          </div>
+          <div>
+
+            <div class="form-group p-2 d-flex justify-content-end">
+
+              <button type="submit" class="btn btn-primary btn-block ">{% trans "Sign Up" %}</button>
+            </div>
+            <div>
+              <p>{% trans "Already have an account?" %} <a href="{% url 'login' %}">{% trans "Log in here" %}</a></p>
+
+              <!-- 
+              <div class="text-center">
+                {% if form.errors %}
+                {% for field in form %}
+              
+                {% for error in field.errors %}
+                {{field.label}}: {{ error|escape }}
+                {% endfor %}
+              
+                {% endfor %}
+                {% endif %}
+              </div> -->
+            </div>
+          </div>
+        </form>
+
+
+      </div>
+    </div>
+  </div>
+
+
+  <!--  -->
+</div>
+{% endblock %}

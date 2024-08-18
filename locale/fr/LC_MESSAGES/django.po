@@ -1,0 +1,65 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-08-18 12:25+0300\n"
+"PO-Revision-Date: 2024-08-18 09:28+0000\n"
+"Last-Translator:   <mo@m.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Translated-Using: django-rosetta 0.10.0\n"
+
+#: project/settings.py:133
+msgid "English"
+msgstr ""
+
+#: project/settings.py:134
+msgid "French"
+msgstr ""
+
+#: templates/base.html:23
+msgid "Increase Font Size"
+msgstr " Agrandir la police"
+
+#: templates/base.html:24
+msgid "Toggle High Contrast"
+msgstr " Basculer en contraste haut"
+
+#: templates/base.html:56
+msgid "Language"
+msgstr " Langue"
+
+#: templates/registration/login.html:18 templates/registration/login.html:33
+msgid "Log In"
+msgstr " Se connecter"
+
+#: templates/registration/login.html:36
+msgid "Don't have an account?"
+msgstr " Vous n'avez pas de compte?"
+
+#: templates/registration/login.html:36
+msgid "Register here"
+msgstr " S'enregistrer"
+
+#: templates/registration/register.html:5
+#: templates/registration/register.html:9
+msgid "Register"
+msgstr " S'enregistrer"
+
+#: templates/registration/register.html:11
+msgid "Already have an account?"
+msgstr " Vous avez déjà un compte?"
+
+#: templates/registration/register.html:11
+msgid "Log in here"
+msgstr " Se connecter"
