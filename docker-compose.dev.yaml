@@ -1,0 +1,70 @@
+# version: '3.9'
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3306:3306"
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+      - shared:/app/media
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    develop:
+      watch:
+        - path: ./
+          action: sync
+          target: /app
+          ignore:
+            - node_modules/
+            - venv/
+            - .git/
+        - path: requirements.txt
+          action: rebuild
+    env_file:
+      - .env
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  celery:
+    build: .
+    command: celery -A project worker -l info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - web
+    user: "1000:1000"
+
+  appium:
+    image: appium/appium
+    ports:
+      - "4723:4723"
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+      - shared:/app/media
+    environment:
+      - APPIUM_ARGS=--session-override
+    privileged: true
+    devices:
+      - "/dev/kvm:/dev/kvm"
+volumes:
+  db_data:
+  shared:

@@ -23,19 +23,19 @@
     .high-contrast a {
       color: yellow;
     }
+
+    * {
+      font: 1em sans-serif;
+    }
   </style>
   <link rel="stylesheet" href="{% static 'css/main.css' %}">
 </head>
 
 <body class="">
-  <!-- <nav> -->
-  <!-- <button onclick="increaseFontSize()">{% trans "Increase Font Size" %}</button> -->
-  <!-- <button onclick="toggleHighContrast()">{% trans "Toggle High Contrast" %}</button> -->
-
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">Tradvo task</a>
+      <a class="navbar-brand" href="{% url 'dashboard' %}">Tradvo task</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -43,20 +43,14 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item ">
-            <!-- <a class="nav-link" aria-current="page" href="#">increase Font Size</a>
-                -->
             <div class="nav-link r" style="cursor: pointer;" onclick="increaseFontSize()">F +</div>
           </li>
 
           <li class="nav-item">
-            <!-- <a class="nav-link" aria-current="page" href="#">increase Font Size</a>
-                          -->
             <div class="nav-link" style="cursor: pointer;" onclick="decreaseFontSize()">F -</div>
           </li>
 
           <li class="nav-item">
-            <!-- <a class="nav-link" aria-current="page" href="#">increase Font Size</a>
-                          -->
             <div class="nav-link pe-auto " style="cursor: pointer;" onclick="toggleHighContrast()">contrast</div>
           </li>
           <li class="nav-item dropdown">
@@ -70,8 +64,8 @@
               {% get_language_info_list for LANGUAGES as languages %}
 
               {% for lang in languages %}
-              <li>
-                <a class="dropdown-item" href="/{{ lang.code }}/login/">
+              <li class="lang" id="{{ lang.code }}">
+                <a class="dropdown-item" id="{{ lang.code }}" href="#">
                   {{ lang.name_local }}
                 </a>
               </li>
@@ -88,13 +82,6 @@
             <a href="{% url 'login' %}" class="nav-link">{% trans "Log In" %}</a> {% endif %}
 
           </li>
-          <!-- <div class="d-flex align-content-end justify-content-end">
-
-            <li class="nav-item">
-              {% if request.user.is_authenticated %}
-              <p class="navbar-text">{% trans "Hello" %} {{request.user.username}} {% endif %}</p>
-            </li>
-          </div> -->
         </ul>
       </div>
     </div>
@@ -113,6 +100,20 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"></script>
     <script>
+      const listItems = document.getElementsByClassName('lang');
+
+      for (let i = 0; i < listItems.length; i++) {
+        listItems[i].addEventListener('click', function (event) {
+
+          const list = window.location.pathname.split('/');
+          list[1] = this.id;
+          const newPath = list.join('/');
+
+          const newUrl = `${window.location.origin}${newPath}`;
+          window.location.href = newUrl;
+
+        });
+      }
 
 
       function increaseFontSize() {

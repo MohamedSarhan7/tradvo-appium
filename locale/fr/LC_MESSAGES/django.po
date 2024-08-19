@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-18 12:25+0300\n"
+"POT-Creation-Date: 2024-08-19 12:50+0300\n"
 "PO-Revision-Date: 2024-08-18 09:28+0000\n"
 "Last-Translator:   <mo@m.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,27 +19,106 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Translated-Using: django-rosetta 0.10.0\n"
 
-#: project/settings.py:133
+#: main/models.py:8
+msgid "uploaded_by"
+msgstr " par "
+
+#: main/models.py:9
+msgid "apk_file_path"
+msgstr " chemin du fichier apk"
+
+#: main/models.py:10
+msgid "first_screenshot_path"
+msgstr " chemin de l'image"
+
+#: main/models.py:11
+msgid "second_screenshot_path"
+msgstr " chemin de l'image"
+
+#: main/models.py:12
+msgid "video_recording_path"
+msgstr " chemin de l'image"
+
+#: project/settings.py:144
 msgid "English"
-msgstr ""
+msgstr " Anglais"
 
-#: project/settings.py:134
+#: project/settings.py:145
 msgid "French"
+msgstr " Français"
+
+#: templates/apps/all-apps.html:17
+msgid "My Apps"
+msgstr " Mes applications"
+
+#: templates/apps/all-apps.html:21
+#, fuzzy
+#| msgid "add new app"
+msgid "new app"
+msgstr " nouvelle application"
+
+#: templates/apps/all-apps.html:33
+msgid "No Apps Uploaded"
+msgstr " Aucune application téléchargée"
+
+#: templates/apps/all-apps.html:39
+msgid "app name"
+msgstr " nom de l'application"
+
+#: templates/apps/all-apps.html:50
+msgid "start test"
 msgstr ""
 
-#: templates/base.html:23
+#: templates/apps/all-apps.html:51
+msgid "update"
+msgstr " mettre a jour"
+
+#: templates/apps/all-apps.html:52
+msgid "delete"
+msgstr " effacer"
+
+#: templates/apps/app_confirm_delete.html:7
+msgid "Go Back"
+msgstr " Retour"
+
+#: templates/apps/app_confirm_delete.html:13
+msgid "Are your sure you want to delete this task?"
+msgstr " Etes-vous sûr de vouloir supprimer cette tâche?"
+
+#: templates/apps/app_confirm_delete.html:14
+msgid "Delete"
+msgstr " Effacer"
+
+#: templates/apps/app_form.html:13
+msgid "add new app"
+msgstr " ajouter une nouvelle application"
+
+#: templates/apps/app_form.html:17
+msgid "Name"
+msgstr " Nom"
+
+#: templates/apps/app_form.html:29
+msgid "Submit"
+msgstr " Envoyer"
+
+#: templates/base.html:32
 msgid "Increase Font Size"
 msgstr " Agrandir la police"
 
-#: templates/base.html:24
+#: templates/base.html:33
 msgid "Toggle High Contrast"
 msgstr " Basculer en contraste haut"
 
-#: templates/base.html:56
+#: templates/base.html:65
 msgid "Language"
 msgstr " Langue"
 
-#: templates/registration/login.html:18 templates/registration/login.html:33
+#: templates/base.html:86
+msgid "Logout"
+msgstr " Se deconnecter"
+
+#: templates/base.html:88 templates/registration/login.html:18
+#: templates/registration/login.html:33
 msgid "Log In"
 msgstr " Se connecter"
 
@@ -51,15 +130,24 @@ msgstr " Vous n'avez pas de compte?"
 msgid "Register here"
 msgstr " S'enregistrer"
 
-#: templates/registration/register.html:5
-#: templates/registration/register.html:9
-msgid "Register"
+#: templates/registration/register.html:18
+msgid "Sign up"
 msgstr " S'enregistrer"
 
-#: templates/registration/register.html:11
+#: templates/registration/register.html:38
+msgid "Sign Up"
+msgstr " S'enregistrer"
+
+#: templates/registration/register.html:41
 msgid "Already have an account?"
 msgstr " Vous avez déjà un compte?"
 
-#: templates/registration/register.html:11
+#: templates/registration/register.html:41
 msgid "Log in here"
 msgstr " Se connecter"
+
+#~ msgid "Hello"
+#~ msgstr " Bonjour"
+
+#~ msgid "Register"
+#~ msgstr " S'enregistrer"

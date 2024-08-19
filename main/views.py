@@ -13,6 +13,10 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 
 from django.urls import reverse_lazy
+from .models import App
+from .forms import AppForm
+
+from django.contrib.auth.models import User
 class LoginPage(LoginView):
     template_name = "registration/login.html"
     fields = "__all__"
@@ -39,24 +43,55 @@ class RegisterPage(FormView):
             return redirect('dashboard')
         return super(RegisterPage, self).get(*args, **kwargs)
 
-def test(request):
+class AllAppsView(LoginRequiredMixin, ListView):
+    model = App
+    template_name = 'apps/all-apps.html'
+    context_object_name = 'apps'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['apps'] = context['apps'].filter(uploaded_by=self.request.user)
 
-    return render(request, 'dashboard.html', {'user': request.user})
+        search_input=self.request.GET.get("search-area") or ''
+        if search_input:
+            context['tasks']=context['tasks'].filter(title__contains=search_input)
+        context['search_input']=search_input
+        return context
+class AppCreateView(LoginRequiredMixin,CreateView):
+    model = App
+    form_class = AppForm
+    template_name = 'apps/app_form.html'
+    success_url = reverse_lazy('dashboard')
+    
+    def form_valid(self, form):
+        form.instance.uploaded_by = self.request.user
+        return super().form_valid(form)
+      
+class AppUpdateView(LoginRequiredMixin, UpdateView):
+    model = App
+    form_class = AppForm
+    template_name = 'apps/app_form.html'
+    success_url = reverse_lazy('dashboard')
 
+    def form_valid(self, form):
+        form.instance.uploaded_by = self.request.user
+        return super().form_valid(form)
 
-# class AppsList(LoginRequiredMixin, ListView):
-#     model = Task
-#     template_name = 'base/tasks.html'
-#     context_object_name = 'tasks'
+class AppDeleteView(LoginRequiredMixin, DeleteView):
+    model = App
+    template_name = 'apps/app_confirm_delete.html'
+    success_url = reverse_lazy('dashboard')
 
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['tasks'] = context['tasks'].filter(user=self.request.user)
-#         context['count'] = context['tasks'].filter(complete=False).count()
-        
-        
-#         search_input=self.request.GET.get("search-area") or ''
-#         if search_input:
-#             context['tasks']=context['tasks'].filter(title__contains=search_input)
-#         context['search_input']=search_input    
-#         return context
+    def test_func(self):
+        app = self.get_object()
+        return self.request.user == app.uploaded_by
+      
+# views.py
+from django.http import HttpResponse
+from .tasks import run_appium_test
+
+def start_appium_test_view(request,pk):
+    print("========== " ,pk)
+    app=App.objects.get(pk=pk)
+    print("==== ,",app.name,app.apk_file_path)
+    run_appium_test.delay(pk)
+    return HttpResponse("Appium test started.")

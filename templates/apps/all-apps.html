@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block content %}
+
+
+
+
+<section class="">
+  <div class="d-flex flex-column  ">
+    <div class="d-flex justify-content-center">
+
+      <div class="d-flex justify-content-between  w-50 p-3">
+
+        <h2 class="text-capitalize form-label">{% trans "My Apps" %}</h2>
+        <div class="d-flex justify-content-end">
+          <div>
+
+            <a class="btn btn-outline-success" href="{% url 'create' %}">{% trans "new app" %}</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <div class="w-50 d-flex justify-content-center w-75 ">
+
+        {% if apps.count == 0 %}
+
+        <li><a>{% trans "No Apps Uploaded" %}</a></li>
+
+        {% else %}
+
+        <table class="table table-striped-columns">
+          <thead class="w-100">
+            <th class="w-50 text-center text-capitalize">{% trans "app name" %}</th>
+            <th class="w-50"></th>
+          </thead>
+          <tbody>
+            {% for app in apps %}
+            <tr>
+              <td class="text-center">
+                <a href="{% url 'app-update' app.id %}" class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{app.name | capfirst}}</a>
+              </td>
+              <td>
+                <div class="">
+                  <a class="btn btn-primary m-1 p-2" href="{% url 'run_appium_test' app.id %}"> {% trans "start test" %} </a>
+                  <a class="btn btn-secondary m-1 p-2" href="{% url 'app-update' app.id %}"> {% trans "update" %} </a>
+                  <a class="btn btn-danger m-1 p-2" href="{% url 'app-delete' app.id %}"> {% trans "delete" %} </a>
+                  
+                </div>
+              </td>
+
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endif %}
+      </div>
+
+    </div>
+
+  </div>
+
+
+</section>
+
+
+{% endblock %}
