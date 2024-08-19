@@ -24,6 +24,7 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    # user: "1000:1000"
     develop:
       watch:
         - path: ./
@@ -48,10 +49,11 @@ services:
     command: celery -A project worker -l info
     volumes:
       - .:/app
+      - shared:/app/media
     depends_on:
       - redis
       - web
-    user: "1000:1000"
+    # user: "1000:1000"
 
   appium:
     image: appium/appium

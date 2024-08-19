@@ -161,8 +161,9 @@ STATICFILES_DIRS =[
 
 LOGIN_REDIRECT_URL = '/dashboard/'
 
+
 MEDIA_URL="media/"
-MEDIA_ROOT=BASE_DIR
+MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', "redis://redis:6379")
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND',"redis://redis:6379")

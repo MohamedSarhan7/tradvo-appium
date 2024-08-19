@@ -12,25 +12,28 @@ from PIL import Image
 import json
 from io import BytesIO
 from django.core.files import File
+from django.core.files.base import ContentFile
 
 from django.conf import settings
 from pathlib import Path
+from PIL import Image
+import io
+import hashlib
 @shared_task
 def run_appium_test(pk):
     print(f"Running Appium test for PK: {pk}")
     app=App.objects.get(pk=pk)
-    print("========= file ",app.apk_file_path,app.screen_changed)
     full_path = Path(settings.BASE_DIR) / str(app.apk_file_path)
-    # app.screen_changed=True
-    app.save()
+    
+
     def get_driver():
         desired_caps = {
         'platformName': 'Android',
         'platformVersion': '13.0',
         'deviceName': 'f5c6a6ba',
-        'app': str(full_path),  # Path to your APK
+        'app': str(full_path), 
         'automationName': 'UiAutomator2',
-        'appPackage': 'com.example.todo',  # Adjust as needed
+        'appPackage': 'com.example.todo', 
         'autoGrantPermissions': True
         }
         
@@ -38,36 +41,57 @@ def run_appium_test(pk):
     # Use AppiumOptions instead of webdriver.Remote directly
         options = AppiumOptions()
         for key, value in desired_caps.items():
-          options.set_capability(key, value)
+            options.set_capability(key, value)
 
         return webdriver.Remote('http://appium:4723', options=options)
 
-    def capture_screenshot(driver, filename):
+    def capture_screenshot(driver):
         screenshot = driver.get_screenshot_as_png()
         image = Image.open(BytesIO(screenshot))
-        image.save(filename)
+        image_buffer = BytesIO()
+        image.save(image_buffer,format='PNG')
+        image_bytes = image_buffer.getvalue()
+        image_buffer.close()
+        return image_bytes
 
-    def record_video(driver, output_file):
-        # Start video recording
+    def start_record_video(driver):
         driver.start_recording_screen()
 
-        # Perform actions
-        time.sleep(10)  # Adjust time as needed
-
-        # Stop recording and save video
+        
+    
+    def stop_record_video(driver):
+        driver.start_recording_screen()
+        time.sleep(10)
+        # driver.stop_recording_screen()
         video_base64 = driver.stop_recording_screen()
         video_data = base64.b64decode(video_base64)
-        with open(output_file, 'wb') as f:
-            f.write(video_data)
-    
-    
-    base=settings.BASE_DIR / settings.MEDIA_ROOT
+        return video_data
+
+    def get_image_hash(image_bytes):
+        """
+        Generate a hash for the given image bytes.
+        """
+        image = Image.open(io.BytesIO(image_bytes))
+        hasher = hashlib.md5()  # You can use sha256 or another algorithm as well
+        hasher.update(image.tobytes())
+        return hasher.hexdigest()
+
+    def compare_images(image_bytes1, image_bytes2):
+        """
+        Compare two images in bytes to see if they are the same.
+        """
+        hash1 = get_image_hash(image_bytes1)
+        hash2 = get_image_hash(image_bytes2)
+        return hash1 == hash2
+
     driver = get_driver()
     try:
         # Capture initial screen
-        initial_screenshot_path = Path(base) / 'initial_screen.png'
-        capture_screenshot(driver, initial_screenshot_path)
-        
+        # start_record_video(driver)
+        driver.start_recording_screen()
+        time.sleep(5)
+        first_bytes =capture_screenshot(driver)
+        app.first_screenshot_path.save('initial_screen.png', ContentFile(first_bytes))
         # Get UI elements
         ui_elements = driver.page_source
         
@@ -77,50 +101,38 @@ def run_appium_test(pk):
             buttons[0].click()
             time.sleep(5)  # Wait for potential screen change
 
-            # Capture subsequent screen
-            subsequent_screenshot_path =Path(base) / 'subsequent_screen.png'
-            capture_screenshot(driver, subsequent_screenshot_path)
+
+            second_bytes=capture_screenshot(driver)
+            app.second_screenshot_path.save('subsequent_screen.png', ContentFile(second_bytes))
 
             # Check if the screen has changed
-            screen_changed = not os.path.samefile(initial_screenshot_path, subsequent_screenshot_path)
+            screen_changed = not compare_images(first_bytes, second_bytes)
         else:
             screen_changed = False
-            subsequent_screenshot_path = None
 
-        # Record video
-        video_path =Path(base) / 'video.mp4'
-        
-        print("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa ",video_path,base)
-        record_video(driver, video_path)
-        with open(video_path, 'rb') as f:
-            app.video_recording_path.save('video.mp4', File(f))
-        with open(initial_screenshot_path, 'rb') as f:
-            app.first_screenshot_path.save('initial_screen.png', File(f))
-        with open(subsequent_screenshot_path, 'rb') as f:
-            app.second_screenshot_path.save('subsequent_screen.png', File(f))
+        # driver.start_recording_screen()
+        time.sleep(10)
+        # driver.stop_recording_screen()
+        video_base64 = driver.stop_recording_screen()
+        video_data = base64.b64decode(video_base64)
+        # return video_data
+        # video_data = stop_record_video(driver)
+        video_data = base64.b64decode(video_base64)
+        if len(video_data) > 0:
+            app.video_recording_path.save('video.mp4', ContentFile(video_data))
+            print("vid------------ ",len(video_data))
+        else:
+            app.video_recording_path = None
+            print("vid------------ ",len(video_data))
             
-            print("holaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-        # app.first_screenshot_path.save(initial_screenshot_path)
-        # app.screen_changed=screen_changed
-        # app.second_screenshot_path.save(subsequent_screenshot_path)
-        # app.video_recording_path.save(video_path)
+
+        app.screen_changed=screen_changed
+
         app.ui_hierarchy=json.dumps(ui_elements)
-        # Save data to Django model
-        # app = App(
-        #     name='Sample App',
-        #     initial_screen_screenshot=initial_screenshot_path,
-        #     subsequent_screen_screenshot=subsequent_screenshot_path,
-        #     video_recording=video_path,
-        #     ui_elements=json.dumps(ui_elements),
-        #     screen_changed=screen_changed
-        # )
-        # app.subsequent_screenshot_path=subsequent_screenshot_path
-        # app.first_screenshot_path=initial_screen_screenshot
+
         app.save()
         
 
     finally:
         driver.quit()
-        # os.remove('initial_screen.png')
-        # os.remove('after_click_screen.png')
-        # os.remove('test_video.mp4')
+

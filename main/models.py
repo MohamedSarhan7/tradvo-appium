@@ -10,7 +10,7 @@ class App(models.Model):
   first_screenshot_path=models.FileField(verbose_name=_("first_screenshot_path"), upload_to="media/%Y/%m/%d", max_length=100,blank=True,null=True)
   second_screenshot_path=models.FileField(verbose_name=_("second_screenshot_path"), upload_to="media/%Y/%m/%d", max_length=100,blank=True,null=True)
   video_recording_path=models.FileField(verbose_name=_("video_recording_path"), upload_to="media/%Y/%m/%d", max_length=100,blank=True,null=True)
-  ui_hierarchy = models.CharField(max_length=255,blank=True,null=True)
+  ui_hierarchy = models.JSONField(blank=True, null=True)
   screen_changed=models.BooleanField(default=False)
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
