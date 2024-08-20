@@ -77,7 +77,6 @@ services:
       - WEB_VNC=true
       - APPIUM=true
       - STARTUP_TIMEOUT=600
-      - DISABLE_LOG_WEB_SHARED=true
     privileged: true
     devices:
       - /dev/kvm:/dev/kvm
