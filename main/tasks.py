@@ -29,8 +29,8 @@ def run_appium_test(pk):
     def get_driver():
         desired_caps = {
         'platformName': 'Android',
-        'platformVersion': '13.0',
-        'deviceName': 'f5c6a6ba',
+        # 'platformVersion': '13.0',
+        # 'deviceName': 'f5c6a6ba',
         'app': str(full_path), 
         'automationName': 'UiAutomator2',
         'appPackage': 'com.example.todo', 
@@ -43,7 +43,7 @@ def run_appium_test(pk):
         for key, value in desired_caps.items():
             options.set_capability(key, value)
 
-        return webdriver.Remote('http://appium:4723', options=options)
+        return webdriver.Remote('http://android-emulator:4723', options=options)
 
     def capture_screenshot(driver):
         screenshot = driver.get_screenshot_as_png()
@@ -88,6 +88,7 @@ def run_appium_test(pk):
     try:
         # Capture initial screen
         # start_record_video(driver)
+        time.sleep(3)
         driver.start_recording_screen()
         time.sleep(5)
         first_bytes =capture_screenshot(driver)
@@ -110,19 +111,14 @@ def run_appium_test(pk):
         else:
             screen_changed = False
 
-        # driver.start_recording_screen()
         time.sleep(10)
-        # driver.stop_recording_screen()
         video_base64 = driver.stop_recording_screen()
-        video_data = base64.b64decode(video_base64)
-        # return video_data
-        # video_data = stop_record_video(driver)
         video_data = base64.b64decode(video_base64)
         if len(video_data) > 0:
             app.video_recording_path.save('video.mp4', ContentFile(video_data))
             print("vid------------ ",len(video_data))
         else:
-            app.video_recording_path = None
+            # app.video_recording_path = None
             print("vid------------ ",len(video_data))
             
 

@@ -1,0 +1,1 @@
+https://github.com/appium/appium/issues/13802

@@ -30,6 +30,6 @@ COPY . /app/
 EXPOSE 8000
 RUN python run.py
 # ENTRYPOINT ["/app/entrypoint.sh"]
-
+# RUN python manage.py test
 # Run Django's development server
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

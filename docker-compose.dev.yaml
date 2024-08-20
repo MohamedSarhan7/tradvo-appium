@@ -55,18 +55,34 @@ services:
       - web
     # user: "1000:1000"
 
-  appium:
-    image: appium/appium
+  # appium:
+  #   image: appium/appium
+  #   ports:
+  #     - "4723:4723"
+  #   volumes:
+  #     - /dev/bus/usb:/dev/bus/usb
+  #     - shared:/app/media
+  #   environment:
+  #     - APPIUM_ARGS=--session-override
+  #   privileged: true
+  #   devices:
+  #     - "/dev/kvm:/dev/kvm"
+  android-emulator:
+    image: budtmo/docker-android:emulator_11.0
     ports:
-      - "4723:4723"
-    volumes:
-      - /dev/bus/usb:/dev/bus/usb
-      - shared:/app/media
+      - "6080:6080"  # VNC
+      - "4723:4723"  # Appium
     environment:
-      - APPIUM_ARGS=--session-override
+      - EMULATOR_DEVICE=Samsung Galaxy S10
+      - WEB_VNC=true
+      - APPIUM=true
+      - STARTUP_TIMEOUT=600
+      - DISABLE_LOG_WEB_SHARED=true
     privileged: true
     devices:
-      - "/dev/kvm:/dev/kvm"
+      - /dev/kvm:/dev/kvm
+    volumes:
+      - shared:/app/media
 volumes:
   db_data:
   shared:
