@@ -11,4 +11,5 @@ urlpatterns = [
     path('app-update/<int:pk>', views.AppUpdateView.as_view(), name='app-update'),
     path('app-delete/<int:pk>',views.AppDeleteView.as_view(),name="app-delete"),
     path('test/<int:pk>', views.start_appium_test_view, name='run_appium_test'),
+    path('app-detail/<int:pk>', views.AppDetailView.as_view(), name='app-detail'),
 ]

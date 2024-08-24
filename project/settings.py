@@ -24,9 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9n2zy7enrjz(j8@ceh$b83ff^-nxj6cnxei%r5ywnad5sgohhp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -88,16 +89,23 @@ WSGI_APPLICATION = 'project.wsgi.application'
 from dotenv import load_dotenv
 
 load_dotenv()
-
-
-DATABASES = {
+import sys
+if 'test' in sys.argv:
+    DATABASES= {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+       }
+    }
+else: 
+    DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USER'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'NAME': os.getenv('DATABASE_NAME','mydatebase'),
+        'USER': os.getenv('DATABASE_USER','myuser'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD','mypassword'),
         'HOST': os.getenv('DATABASE_HOST', 'db'),
-        'PORT': os.getenv('DATABASE_PORT'),
+        'PORT': os.getenv('DATABASE_PORT', '3306'),
     }
 }
 # print(DATABASES)

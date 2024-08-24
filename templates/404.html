@@ -1,10 +1,17 @@
-{%extends"base.html"%}
+{% extends 'base.html' %}
+{% load i18n %}
 {% block title %}
-Not Found!
+{% trans "Not Found!" %}
 {%endblock %}
 
 {%block content %}
-<h2>We're sorry!</h2>
-<p>But we could not find that page!</p>
+<div class="d-flex justify-content-center">
+  <div class="p-5">
 
+    <h2>{% trans "We're sorry!" %}</h2>
+    <p>{% trans "But we could not find that page!" %}</p>
+    <a href="{% url 'login' %}" class="btn btn-primary">{% trans "Go Back" %}</a>
+  </div>
+
+</div>
 {%endblock %}

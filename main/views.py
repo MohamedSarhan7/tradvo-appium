@@ -1,22 +1,20 @@
-from django.shortcuts import render
-
 # Create your views here.
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView ,FormView
 from django.views.generic.list import ListView
-
+from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import  redirect
+from django.contrib.auth import  login
 from django.contrib.auth.views import LoginView
-
 from django.urls import reverse_lazy
 from .models import App
 from .forms import AppForm
+from django.http import HttpResponse
+from .tasks import run_appium_test
 
-from django.contrib.auth.models import User
+
 class LoginPage(LoginView):
     template_name = "registration/login.html"
     fields = "__all__"
@@ -24,8 +22,8 @@ class LoginPage(LoginView):
 
     def get_success_url(self):
         return reverse_lazy('dashboard')
-      
-      
+
+
 class RegisterPage(FormView):
     template_name='registration/register.html'  
     form_class=UserCreationForm  
@@ -37,6 +35,8 @@ class RegisterPage(FormView):
         if user is not None:
             login(self.request,user)
         return super(RegisterPage,self).form_valid(form)
+    def form_invalid(self, form):
+        return super(RegisterPage, self).form_invalid(form)
 
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated:
@@ -50,12 +50,8 @@ class AllAppsView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['apps'] = context['apps'].filter(uploaded_by=self.request.user)
-
-        search_input=self.request.GET.get("search-area") or ''
-        if search_input:
-            context['tasks']=context['tasks'].filter(title__contains=search_input)
-        context['search_input']=search_input
         return context
+
 class AppCreateView(LoginRequiredMixin,CreateView):
     model = App
     form_class = AppForm
@@ -65,7 +61,7 @@ class AppCreateView(LoginRequiredMixin,CreateView):
     def form_valid(self, form):
         form.instance.uploaded_by = self.request.user
         return super().form_valid(form)
-      
+
 class AppUpdateView(LoginRequiredMixin, UpdateView):
     model = App
     form_class = AppForm
@@ -84,14 +80,15 @@ class AppDeleteView(LoginRequiredMixin, DeleteView):
     def test_func(self):
         app = self.get_object()
         return self.request.user == app.uploaded_by
-      
-# views.py
-from django.http import HttpResponse
-from .tasks import run_appium_test
+class AppDetailView(LoginRequiredMixin,DetailView):
+    model = App
+    template_name = 'apps/view-app.html'
+
+
 
 def start_appium_test_view(request,pk):
-    print("========== " ,pk)
+    # print("========== " ,pk)
     app=App.objects.get(pk=pk)
-    print("==== ,",app.name,app.apk_file_path)
+    # print("==== ,",app.name,app.apk_file_path)
     run_appium_test.delay(pk)
     return HttpResponse("Appium test started.")

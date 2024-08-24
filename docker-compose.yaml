@@ -23,9 +23,15 @@ services:
       - "8000:8000"
     depends_on:
       - db
-    env_file:
-      - .env
-
+    environment:
+    - DATABASE_NAME=mydatabase
+    - DATABASE_USER=myuser
+    - DATABASE_PASSWORD=mypassword
+    - DATABASE_HOST=db
+    - DATABASE_PORT=3306
+    - CELERY_BROKER_URL=redis://redis:6379
+    - CELERY_RESULT_BACKEND=redis://redis:6379
+    - DEBUG=False
   redis:
     image: redis
     ports:
@@ -51,6 +57,8 @@ services:
       - WEB_VNC=true
       - APPIUM=true
       - STARTUP_TIMEOUT=600
+      - DISABLE_LOG_WEB_SHARED=true
+
     privileged: true
     devices:
       - /dev/kvm:/dev/kvm

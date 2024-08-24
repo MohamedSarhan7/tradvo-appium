@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load i18n %}
 {% load widget_tweaks %}
 
@@ -34,23 +34,16 @@
             </div>
             <div>
               <p>{% trans "Don't have an account?" %} <a href="{% url 'register' %}">{% trans "Register here" %}</a></p>
-
-              <!-- 
-              <div class="text-center">
-                {% if form.errors %}
-                {% for field in form %}
-              
-                {% for error in field.errors %}
-                {{field.label}}: {{ error|escape }}
-                {% endfor %}
-              
-                {% endfor %}
-                {% endif %}
-              </div> -->
             </div>
           </div>
         </form>
-
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger">
+          {% for error in form.non_field_errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
 
       </div>
     </div>

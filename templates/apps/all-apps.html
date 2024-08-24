@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load i18n %}
 {% load widget_tweaks %}
 {% load static %}
@@ -43,14 +43,17 @@
             {% for app in apps %}
             <tr>
               <td class="text-center">
-                <a href="{% url 'app-update' app.id %}" class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{app.name | capfirst}}</a>
+                <a href="{% url 'app-update' app.id %}"
+                  class="link-underline link-underline-opacity-0 link-underline-opacity-75-hover">{{app.name |
+                  capfirst}}</a>
               </td>
               <td>
                 <div class="">
-                  <a class="btn btn-primary m-1 p-2" href="{% url 'run_appium_test' app.id %}"> {% trans "start test" %} </a>
+                  <a class="btn btn-primary m-1 p-2" href="{% url 'run_appium_test' app.id %}"> {% trans "start test" %}
+                  </a><a class="btn btn-success m-1 p-2" href="{% url 'app-detail' app.id %}"> {% trans "view" %} </a>
                   <a class="btn btn-secondary m-1 p-2" href="{% url 'app-update' app.id %}"> {% trans "update" %} </a>
                   <a class="btn btn-danger m-1 p-2" href="{% url 'app-delete' app.id %}"> {% trans "delete" %} </a>
-                  
+
                 </div>
               </td>
 

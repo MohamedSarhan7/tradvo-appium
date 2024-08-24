@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-19 12:50+0300\n"
+"POT-Creation-Date: 2024-08-24 11:00+0300\n"
 "PO-Revision-Date: 2024-08-18 09:28+0000\n"
 "Last-Translator:   <mo@m.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,13 +39,29 @@ msgstr " chemin de l'image"
 msgid "video_recording_path"
 msgstr " chemin de l'image"
 
-#: project/settings.py:144
+#: project/settings.py:156
 msgid "English"
 msgstr " Anglais"
 
-#: project/settings.py:145
+#: project/settings.py:157
 msgid "French"
 msgstr " Français"
+
+#: templates/404.html:4
+msgid "Not Found!"
+msgstr " Pas trouve !"
+
+#: templates/404.html:11
+msgid "We're sorry!"
+msgstr " De merde !"
+
+#: templates/404.html:12
+msgid "But we could not find that page!"
+msgstr " Mais nous ne pouvons pas trouver cette page !"
+
+#: templates/404.html:13 templates/apps/app_confirm_delete.html:7
+msgid "Go Back"
+msgstr " Retour"
 
 #: templates/apps/all-apps.html:17
 msgid "My Apps"
@@ -65,21 +81,21 @@ msgstr " Aucune application téléchargée"
 msgid "app name"
 msgstr " nom de l'application"
 
-#: templates/apps/all-apps.html:50
+#: templates/apps/all-apps.html:52
 msgid "start test"
-msgstr ""
+msgstr " debuter le test"
 
-#: templates/apps/all-apps.html:51
+#: templates/apps/all-apps.html:53
+msgid "view"
+msgstr " afficher"
+
+#: templates/apps/all-apps.html:54
 msgid "update"
 msgstr " mettre a jour"
 
-#: templates/apps/all-apps.html:52
+#: templates/apps/all-apps.html:55
 msgid "delete"
 msgstr " effacer"
-
-#: templates/apps/app_confirm_delete.html:7
-msgid "Go Back"
-msgstr " Retour"
 
 #: templates/apps/app_confirm_delete.html:13
 msgid "Are your sure you want to delete this task?"
@@ -101,23 +117,53 @@ msgstr " Nom"
 msgid "Submit"
 msgstr " Envoyer"
 
-#: templates/base.html:32
-msgid "Increase Font Size"
-msgstr " Agrandir la police"
+#: templates/apps/view-app.html:8
+msgid "App Details"
+msgstr " Détails de l'application"
 
-#: templates/base.html:33
-msgid "Toggle High Contrast"
-msgstr " Basculer en contraste haut"
+#: templates/apps/view-app.html:11
+#, fuzzy
+#| msgid "Name"
+msgid "App Name:"
+msgstr " Nom"
 
-#: templates/base.html:65
+#: templates/apps/view-app.html:19
+#, fuzzy
+#| msgid "first_screenshot_path"
+msgid "First Screenshot"
+msgstr " chemin de l'image"
+
+#: templates/apps/view-app.html:28
+#, fuzzy
+#| msgid "second_screenshot_path"
+msgid "Second Screenshot"
+msgstr " chemin de l'image"
+
+#: templates/apps/view-app.html:37
+msgid "App Video Record"
+msgstr " Vidéo de l'application"
+
+#: templates/apps/view-app.html:40
+msgid "Your browser does not support the video tag."
+msgstr " Votre navigateur ne prend pas en charge la balise vidéo."
+
+#: templates/apps/view-app.html:47
+msgid "Screen Changed:"
+msgstr " Ecran change : "
+
+#: templates/apps/view-app.html:48
+msgid "UI Hierarchy:"
+msgstr " Héritage de l'interface : "
+
+#: templates/base.html:59
 msgid "Language"
 msgstr " Langue"
 
-#: templates/base.html:86
+#: templates/base.html:80
 msgid "Logout"
 msgstr " Se deconnecter"
 
-#: templates/base.html:88 templates/registration/login.html:18
+#: templates/base.html:82 templates/registration/login.html:18
 #: templates/registration/login.html:33
 msgid "Log In"
 msgstr " Se connecter"
@@ -145,6 +191,12 @@ msgstr " Vous avez déjà un compte?"
 #: templates/registration/register.html:41
 msgid "Log in here"
 msgstr " Se connecter"
+
+#~ msgid "Increase Font Size"
+#~ msgstr " Agrandir la police"
+
+#~ msgid "Toggle High Contrast"
+#~ msgstr " Basculer en contraste haut"
 
 #~ msgid "Hello"
 #~ msgstr " Bonjour"
