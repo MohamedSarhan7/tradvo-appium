@@ -45,6 +45,8 @@ services:
       - CELERY_BROKER_URL=redis://redis:6379
       - CELERY_RESULT_BACKEND=redis://redis:6379
       - DEBUG=True
+    env_file:
+      - .env
 
   redis:
     image: redis
@@ -62,35 +64,35 @@ services:
       - web
     # user: "1000:1000"
 
-  # appium:
-  #   container_name: android-emulator
-  #   image: appium/appium
-  #   ports:
-  #     - "4723:4723"
-  #   volumes:
-  #     - /dev/bus/usb:/dev/bus/usb
-  #     - shared:/app/media
-  #   environment:
-  #     - APPIUM_ARGS=--session-override
-  #   privileged: true
-  #   devices:
-  #     - "/dev/kvm:/dev/kvm"
-  android-emulator:
-    image: budtmo/docker-android:emulator_11.0
+  appium:
+    container_name: android-emulator
+    image: appium/appium
     ports:
-      - "6080:6080"  # VNC
-      - "4723:4723"  # Appium
+      - "4723:4723"
+    volumes:
+      - /dev/bus/usb:/dev/bus/usb
+      - shared:/app/media
     environment:
-      - EMULATOR_DEVICE=Samsung Galaxy S10
-      - WEB_VNC=true
-      - APPIUM=true
-      - STARTUP_TIMEOUT=600
-      - DISABLE_LOG_WEB_SHARED=true
+      - APPIUM_ARGS=--session-override
     privileged: true
     devices:
-      - /dev/kvm:/dev/kvm
-    volumes:
-      - shared:/app/media
+      - "/dev/kvm:/dev/kvm"
+  # android-emulator:
+  #   image: budtmo/docker-android:emulator_11.0
+  #   ports:
+  #     - "6080:6080"  # VNC
+  #     - "4723:4723"  # Appium
+  #   environment:
+  #     - EMULATOR_DEVICE=Samsung Galaxy S10
+  #     - WEB_VNC=true
+  #     - APPIUM=true
+  #     - STARTUP_TIMEOUT=600
+  #     - DISABLE_LOG_WEB_SHARED=true
+  #   privileged: true
+  #   devices:
+  #     - /dev/kvm:/dev/kvm
+  #   volumes:
+  #     - shared:/app/media
 volumes:
   db_data:
   shared:

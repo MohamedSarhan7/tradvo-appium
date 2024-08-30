@@ -23,7 +23,7 @@ import hashlib
 def run_appium_test(pk):
     print(f"Running Appium test for PK: {pk}")
     app=App.objects.get(pk=pk)
-    full_path = Path(settings.BASE_DIR) / str(app.apk_file_path)
+    full_path = Path(settings.BASE_DIR) /Path(settings.MEDIA_ROOT)/str(app.apk_file_path)
     
 
     def get_driver():
@@ -61,7 +61,7 @@ def run_appium_test(pk):
     
     def stop_record_video(driver):
         driver.start_recording_screen()
-        time.sleep(10)
+        time.sleep(5)
         # driver.stop_recording_screen()
         video_base64 = driver.stop_recording_screen()
         video_data = base64.b64decode(video_base64)
@@ -90,7 +90,7 @@ def run_appium_test(pk):
         # start_record_video(driver)
         time.sleep(3)
         driver.start_recording_screen()
-        time.sleep(5)
+        time.sleep(3)
         first_bytes =capture_screenshot(driver)
         app.first_screenshot_path.save('initial_screen.png', ContentFile(first_bytes))
         # Get UI elements
@@ -111,7 +111,7 @@ def run_appium_test(pk):
         else:
             screen_changed = False
 
-        time.sleep(10)
+        time.sleep(5)
         video_base64 = driver.stop_recording_screen()
         video_data = base64.b64decode(video_base64)
         if len(video_data) > 0:

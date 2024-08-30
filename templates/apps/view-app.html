@@ -30,15 +30,19 @@
       </div>
     </div>
 
-  </div>
-
-  <!-- Video Section -->
-  <div class="mb-4">
-    <h3>{% trans "App Video Record" %}</h3>
-    <video width="100%" controls>
-      <source src="/media/{{ app.video_recording_path }}" type="video/mp4">
-    {% trans "Your browser does not support the video tag." %}
-    </video>
+    <div class="col-md-4 mb-3">
+      <!-- <h3></h3> -->
+      <div class="card">
+  
+        <video width="100%" controls>
+          <source src="/media/{{ app.video_recording_path }}" type="video/mp4">
+          {% trans "Your browser does not support the video tag." %}
+        </video>
+        <div class="card-body">
+          <p class="card-text">{% trans "App Video Record" %}</p>
+        </div>
+      </div>
+    </div>
   </div>
 
 
